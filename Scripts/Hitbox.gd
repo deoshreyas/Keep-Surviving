@@ -6,8 +6,8 @@ extends Area2D
 @onready var disabled_timer = $DisabledTimer
 
 func tempDisable():
-	collision.call_deferred("_set", "disabled", true)
+	collision.call_deferred("set", "disabled", true)
 	disabled_timer.start()
 
 func _on_disabled_timer_timeout():
-	collision.call_deferred("_set", "disabled", false)
+	collision.call_deferred("set", "disabled", false)

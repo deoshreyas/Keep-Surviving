@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bo3j5tduk7bfy"]
 
 [ext_resource type="PackedScene" uid="uid://d4ffsob233px3" path="res://Scenes/player.tscn" id="1_5x2od"]
-[ext_resource type="PackedScene" uid="uid://c4hn8x1d4m7xo" path="res://Scenes/enemy.tscn" id="2_wxskj"]
+[ext_resource type="PackedScene" uid="uid://ggx1gcvkdgwi" path="res://Scenes/enemy_spawner.tscn" id="2_litg5"]
 
 [node name="World" type="Node2D"]
 position = Vector2(6, 0)
@@ -9,5 +9,4 @@ position = Vector2(6, 0)
 [node name="Player" parent="." instance=ExtResource("1_5x2od")]
 position = Vector2(135, 81)
 
-[node name="GreenEnemy" parent="." instance=ExtResource("2_wxskj")]
-position = Vector2(283, 34)
+[node name="EnemySpawner" parent="." instance=ExtResource("2_litg5")]

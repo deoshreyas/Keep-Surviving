@@ -5,11 +5,10 @@
 [ext_resource type="Texture2D" uid="uid://dcflk0ow3g3lu" path="res://Assets/Sprites/face_f.png" id="2_e724c"]
 [ext_resource type="PackedScene" uid="uid://dpm1fv8u832uq" path="res://Scenes/hurtbox.tscn" id="4_kr5mb"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_quox5"]
-size = Vector2(40, 43.3333)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ujlwo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2uf7u"]
-size = Vector2(66.6667, 66.6667)
+size = Vector2(66.6667, 63.3333)
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 scale = Vector2(0.3, 0.3)
@@ -22,18 +21,18 @@ texture = ExtResource("1_q6lw0")
 [node name="Face" type="Sprite2D" parent="."]
 texture = ExtResource("2_e724c")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 1.66667)
-shape = SubResource("RectangleShape2D_quox5")
+position = Vector2(0, -4.96705e-07)
+shape = SubResource("RectangleShape2D_ujlwo")
+
+[node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="Hurtbox" parent="." instance=ExtResource("4_kr5mb")]
 collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" parent="Hurtbox" index="0"]
-position = Vector2(7.94729e-07, -7.94729e-07)
+position = Vector2(2.38419e-06, 1.66667)
 shape = SubResource("RectangleShape2D_2uf7u")
 
 [connection signal="hurt" from="Hurtbox" to="." method="_on_hurtbox_hurt"]
