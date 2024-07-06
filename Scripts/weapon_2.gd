@@ -17,8 +17,6 @@ var angle_more = Vector2.ZERO
 signal remove_from_array(object)
 
 func _ready():
-	angle = global_position.direction_to(target)
-	rotation = angle.angle() + deg_to_rad(135)
 	match level:
 		1:
 			hp = 2
@@ -26,19 +24,36 @@ func _ready():
 			damage = 5 
 			knock_amt = 100 
 			attack_size = 1.0
+			
+	var move_to_less = Vector2.ZERO
+	var move_to_more = Vector2.ZERO
+	match last_movement:
+		Vector2.UP, Vector2.DOWN:
+			move_to_less = global_position + Vector2(randf_range(-1, -0.25), last_movement.y) * 500
+			move_to_more = global_position + Vector2(randf_range(0.25, 1), last_movement.y) * 500
+		Vector2.LEFT, Vector2.RIGHT:
+			move_to_less = global_position + Vector2(last_movement.x, randf_range(-1, -0.25)) * 500
+			move_to_more = global_position + Vector2(last_movement.x, randf_range(0.25, 1)) * 500
+		Vector2(1, 1), Vector2(-1, -1), Vector2(1, -1), Vector2(-1, 1):
+			move_to_less = global_position + Vector2(last_movement.x, last_movement.y) * randf_range(0, 0.75) * 500
+			move_to_more = global_position + Vector2(last_movement.x + randf_range(0, 0.75), last_movement.y) * 500
+		
+	angle_less = global_position.direction_to(move_to_less)
+	angle_more = global_position.direction_to(move_to_more)
 	
-	var tween = create_tween()
-	tween.tween_property(self, "scale", Vector2(0.25, 0.25)*attack_size, 1).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
-	tween.play()
+	var tween = create_tween().set_loops(6)
+	var set_angle = randi_range(0, 1)
+	if set_angle==1:
+		angle = angle_less
+		tween.tween_property(self, "angle", angle_more, 2)
+		tween.tween_property(self, "angle", angle_less, 2)
+	else:
+		angle = angle_more
+		tween.tween_property(self, "angle", angle_less, 2)
+		tween.tween_property(self, "angle", angle_more, 2)
 		
 func _physics_process(delta):
 	position += angle * speed * delta
-	
-func enemy_hit(charge = 1):
-	hp -= charge 
-	if hp <= 0:
-		remove_from_array.emit(self)
-		queue_free()
 	
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	remove_from_array.emit(self)

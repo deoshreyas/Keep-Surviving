@@ -48,6 +48,14 @@ wait_time = 1.5
 unique_name_in_owner = true
 wait_time = 0.075
 
+[node name="Weapon2Timer" type="Timer" parent="Attack"]
+unique_name_in_owner = true
+wait_time = 3.0
+
+[node name="Weapon2AttackTimer" type="Timer" parent="Attack/Weapon2Timer"]
+unique_name_in_owner = true
+wait_time = 0.2
+
 [node name="EnemyDetectionArea" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 4
@@ -59,6 +67,8 @@ shape = SubResource("CircleShape2D_2tqa0")
 [connection signal="hurt" from="Hurtbox" to="." method="_on_hurtbox_hurt"]
 [connection signal="timeout" from="Attack/Weapon1Timer" to="." method="_on_weapon_1_timer_timeout"]
 [connection signal="timeout" from="Attack/Weapon1Timer/Weapon1AttackTimer" to="." method="_on_weapon_1_attack_timer_timeout"]
+[connection signal="timeout" from="Attack/Weapon2Timer" to="." method="_on_weapon_2_timer_timeout"]
+[connection signal="timeout" from="Attack/Weapon2Timer/Weapon2AttackTimer" to="." method="_on_weapon_2_attack_timer_timeout"]
 [connection signal="body_entered" from="EnemyDetectionArea" to="." method="_on_enemy_detection_area_body_entered"]
 [connection signal="body_exited" from="EnemyDetectionArea" to="." method="_on_enemy_detection_area_body_exited"]
 
