@@ -25,7 +25,7 @@ func _ready():
 func _physics_process(delta):
 	movement(delta)
 
-func _on_hurtbox_hurt(damage):
+func _on_hurtbox_hurt(damage, _angle, _knockback):
 	HP -= damage
 	print(HP)
 

@@ -1,14 +1,16 @@
 extends Area2D
 
 var level = 1
-var hp = 1
+var hp = 999
 var speed = 100 
 var damage = 5  
 var knock_amt = 100
 var attack_size = 1.0 
 
-var target = Vector2.ZERO 
+var last_movement = Vector2.ZERO  
 var angle = Vector2.ZERO 
+var angle_less = Vector2.ZERO
+var angle_more = Vector2.ZERO
 
 @onready var player = get_tree().get_first_node_in_group("Player")
 
@@ -37,7 +39,7 @@ func enemy_hit(charge = 1):
 	if hp <= 0:
 		remove_from_array.emit(self)
 		queue_free()
-
+	
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	remove_from_array.emit(self)
 	queue_free()
