@@ -11,5 +11,5 @@ func _physics_process(delta):
 
 func _on_hurtbox_hurt(damage):
 	HP -= damage 
-	if damage <= 0:
+	if HP <= 0:
 		queue_free()

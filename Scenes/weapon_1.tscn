@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8c1majdrtgsr"]
+
+[ext_resource type="Texture2D" uid="uid://cism3pui2vicg" path="res://Assets/Sprites/tile_cloud.png" id="1_im03i"]
+[ext_resource type="Script" path="res://Scripts/weapon_1.gd" id="1_kniic"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nlwex"]
+radius = 20.0
+
+[node name="Weapon1" type="Area2D" groups=["Attack"]]
+top_level = true
+scale = Vector2(0.25, 0.25)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_kniic")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_im03i")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_nlwex")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(-4.76837e-07, -4.76837e-07)
+scale = Vector2(2.4, 2.4)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

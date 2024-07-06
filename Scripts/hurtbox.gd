@@ -24,6 +24,8 @@ func _physics_process(delta):
 							hitbox.tempDisable()
 			var damage = hitbox.damage
 			hurt.emit(damage)
+			if hitbox.has_method("enemy_hit"):
+				hitbox.enemy_hit(1)
 
 func _on_area_entered(area):
 	if area.is_in_group("Attack"):
