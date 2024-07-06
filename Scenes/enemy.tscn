@@ -1,0 +1,55 @@
+[gd_scene load_steps=9 format=3 uid="uid://c4hn8x1d4m7xo"]
+
+[ext_resource type="Script" path="res://Scripts/enemy.gd" id="1_gbdwj"]
+[ext_resource type="Texture2D" uid="uid://b6akgigjjfi5g" path="res://Assets/Sprites/green_body_rhombus.png" id="1_gnbts"]
+[ext_resource type="Texture2D" uid="uid://bckjvuvakn7yx" path="res://Assets/Sprites/face_g.png" id="2_fftpu"]
+[ext_resource type="PackedScene" uid="uid://dpm1fv8u832uq" path="res://Scenes/hurtbox.tscn" id="4_q6mfx"]
+[ext_resource type="PackedScene" uid="uid://c2pnmmcid5m5h" path="res://Scenes/hitbox.tscn" id="5_hx5m6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hcikh"]
+size = Vector2(22.6274, 22.6274)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6u2rk"]
+size = Vector2(82.0244, 82.0244)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vrbp2"]
+size = Vector2(45.2548, 45.2548)
+
+[node name="GreenEnemy" type="CharacterBody2D"]
+scale = Vector2(0.25, 0.25)
+script = ExtResource("1_gbdwj")
+
+[node name="Body" type="Sprite2D" parent="."]
+texture = ExtResource("1_gnbts")
+
+[node name="Face" type="Sprite2D" parent="."]
+texture = ExtResource("2_fftpu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 0.785398
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_hcikh")
+
+[node name="Hurtbox" parent="." instance=ExtResource("4_q6mfx")]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0"]
+position = Vector2(0, -2)
+rotation = 0.785398
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_6u2rk")
+
+[node name="Hitbox" parent="." instance=ExtResource("5_hx5m6")]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+rotation = 0.785398
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_vrbp2")
+
+[connection signal="hurt" from="Hurtbox" to="." method="_on_hurtbox_hurt"]
+
+[editable path="Hurtbox"]
+[editable path="Hitbox"]
