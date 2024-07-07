@@ -4,8 +4,18 @@ extends CharacterBody2D
 @export var HP = 80
 var last_movement = Vector2.UP
 
+# HUD
+@onready var level_label = $HUD/Control/LevelLabel
+@onready var exp_bar = $HUD/Control/Exp
+
 var experience = 0 
-var exp_level = 1 
+var exp_level:
+	get:
+		return exp_level 
+	set(value):
+		exp_level = value
+		level_label.text = "Level: " + str(exp_level) 
+		
 var collected_exp = 0
 
 # Attacks
@@ -35,14 +45,20 @@ var weapon2_level = 0
 var weapon3_ammo = 2
 var weapon3_level = 1
 
+# Level up 
+@onready var level_up_panel = get_node("%LevelUpPanel")
+@onready var upgrades = get_node("%Upgrades")
+
 # Enemy 
 var enemy_close = []
 
 func _ready():
 	attack()
+	exp_level = 1
 
 func _physics_process(delta):
 	movement(delta)
+	update_exp_bar()
 
 func _on_hurtbox_hurt(damage, _angle, _knockback):
 	HP -= damage
@@ -137,12 +153,14 @@ func _on_collect_area_area_entered(area):
 
 func calculate_experience(gem_exp):
 	var exp_required = calculate_experience_cap()
-	collected_exp += exp_required
+	collected_exp += gem_exp
 	if experience + collected_exp > exp_required:
-		collected_exp -= exp_required + experience 
+		collected_exp -= exp_required - experience 
 		exp_level += 1
+		experience = 0
 		exp_required = calculate_experience_cap()
 		print("Level: ", exp_level)
+		level_up()
 		calculate_experience(0)
 	else:
 		experience += collected_exp
@@ -153,7 +171,15 @@ func calculate_experience_cap():
 	if exp_level<20:
 		experience_cap = exp_level*5
 	elif exp_level<40:
-		experience_cap = (exp_level - 19) * 10
+		experience_cap = 95 + (exp_level - 19) * 8
 	else:
-		experience_cap = (exp_level - 39) * 15
+		experience_cap = 255 + (exp_level - 39) * 12
 	return experience_cap
+
+func update_exp_bar():
+	exp_bar.max_value = calculate_experience_cap()
+	exp_bar.value = experience
+
+func level_up():
+	level_up_panel.visible = true
+	get_tree().paused = true
