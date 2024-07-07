@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bo3j5tduk7bfy"]
+[gd_scene load_steps=3 format=3 uid="uid://bo3j5tduk7bfy"]
 
 [ext_resource type="PackedScene" uid="uid://d4ffsob233px3" path="res://Scenes/player.tscn" id="1_5x2od"]
 [ext_resource type="PackedScene" uid="uid://ggx1gcvkdgwi" path="res://Scenes/enemy_spawner.tscn" id="2_litg5"]
-[ext_resource type="PackedScene" uid="uid://bwgn250vo1v1h" path="res://Scenes/gem.tscn" id="3_x15kf"]
 
 [node name="World" type="Node2D"]
 position = Vector2(6, 0)
@@ -13,7 +12,3 @@ position = Vector2(135, 81)
 [node name="EnemySpawner" parent="." instance=ExtResource("2_litg5")]
 
 [node name="Loot" type="Node2D" parent="." groups=["Loot"]]
-
-[node name="Gem" parent="." instance=ExtResource("3_x15kf")]
-position = Vector2(172, 109)
-EXPERIENCE = 100

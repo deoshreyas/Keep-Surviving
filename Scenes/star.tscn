@@ -1,21 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://c8c1majdrtgsr"]
+[gd_scene load_steps=4 format=3 uid="uid://dvsk4v4ocwqdr"]
 
-[ext_resource type="Texture2D" uid="uid://cism3pui2vicg" path="res://Assets/Sprites/tile_cloud.png" id="1_im03i"]
-[ext_resource type="Script" path="res://Scripts/weapon_1.gd" id="1_kniic"]
+[ext_resource type="Script" path="res://Scripts/star.gd" id="1_cxlys"]
+[ext_resource type="Texture2D" uid="uid://cism3pui2vicg" path="res://Assets/Sprites/tile_cloud.png" id="2_oj58v"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nlwex"]
 radius = 20.0
 
-[node name="Weapon1" type="Area2D" groups=["Attack"]]
+[node name="Star" type="Area2D" groups=["Attack"]]
 top_level = true
 scale = Vector2(0.01, 0.01)
 collision_layer = 4
 collision_mask = 0
-script = ExtResource("1_kniic")
+script = ExtResource("1_cxlys")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_im03i")
+texture = ExtResource("2_oj58v")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_nlwex")

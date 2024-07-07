@@ -28,7 +28,7 @@ func _ready():
 	_on_reset_pos_timer_timeout()
 	
 func update_weapon():
-	level = player.weapon3_level
+	level = player.hand_level
 	match level:
 		1:
 			var level = 1

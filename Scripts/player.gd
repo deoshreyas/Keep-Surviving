@@ -8,6 +8,7 @@ var last_movement = Vector2.UP
 # HUD
 @onready var level_label = $HUD/Control/LevelLabel
 @onready var exp_bar = $HUD/Control/Exp
+@onready var health_bar = $Healthbar
 
 var experience = 0 
 var exp_level:
@@ -20,31 +21,22 @@ var exp_level:
 var collected_exp = 0
 
 # Attacks
-var weapon1 = preload("res://Scenes/weapon_1.tscn")
-var weapon2 = preload("res://Scenes/weapon_2.tscn")
-var weapon3 = preload("res://Scenes/weapon_3.tscn")
+var star = preload("res://Scenes/star.tscn")
+var hand = preload("res://Scenes/hand.tscn")
 
 # Attack Nodes 
-@onready var weapon1_timer = get_node("%Weapon1Timer")
-@onready var weapon1_attack_timer = get_node("%Weapon1AttackTimer")
-@onready var weapon2_timer = get_node("%Weapon2Timer")
-@onready var weapon2_attack_timer = get_node("%Weapon2AttackTimer")
+@onready var star_timer = get_node("%StarTimer")
+@onready var star_attack_timer = get_node("%StarAttackTimer")
 
 # Weapon 1 
-var weapon1_ammo = 0 
-var weapon1_base_ammo = 1
-var weapon1_attack_speed = 1.5
-var weapon1_level = 0
-
-# Weapon 2
-var weapon2_ammo = 0 
-var weapon2_base_ammo = 1
-var weapon2_attack_speed = 3
-var weapon2_level = 0
+var star_ammo = 0 
+var star_base_ammo = 1
+var star_attack_speed = 1.5
+var star_level = 0
 
 # Weapon 3 
-var weapon3_ammo = 2
-var weapon3_level = 0
+var hand_ammo = 2
+var hand_level = 0
 
 # Level up 
 @onready var level_up_panel = get_node("%LevelUpPanel")
@@ -66,11 +58,13 @@ var additional_attacks = 0
 func _ready():
 	attack()
 	exp_level = 1
-	upgrade_character("WEAPON3-1")
+	upgrade_character("STAR1")
+	health_bar.value = MAXHP
 
 func _physics_process(delta):
 	movement(delta)
 	update_exp_bar()
+	update_health_bar()
 
 func _on_hurtbox_hurt(damage, _angle, _knockback):
 	HP -= clamp(damage-armour, 1, 999)
@@ -87,33 +81,29 @@ func movement(delta):
 	move_and_collide(velocity * delta)
 	
 func attack():
-	if weapon1_level>0:
-		weapon1_timer.wait_time = weapon1_attack_speed * (1 - spell_cooldown)
-		if weapon1_timer.is_stopped():
-			weapon1_timer.start()
-	if weapon2_level>0:
-		weapon2_timer.wait_time = weapon2_attack_speed * (1 - spell_cooldown)
-		if weapon2_timer.is_stopped():
-			weapon2_timer.start()
-	if weapon3_level>0:
-		spawn_weapon3()
+	if star_level>0:
+		star_timer.wait_time = star_attack_speed * (1 - spell_cooldown)
+		if star_timer.is_stopped():
+			star_timer.start()
+	if hand_level>0:
+		spawn_hand()
 
-func _on_weapon_1_timer_timeout():
-	weapon1_ammo += weapon1_base_ammo + additional_attacks
-	weapon1_attack_timer.start()
+func _on_star_timer_timeout():
+	star_ammo += star_base_ammo + additional_attacks
+	star_attack_timer.start()
 	
-func _on_weapon_1_attack_timer_timeout():
-	if weapon1_ammo>0:
-		var weapon1_attack = weapon1.instantiate()
-		weapon1_attack.position = position 
-		weapon1_attack.target = get_random_target()
-		weapon1_attack.level = weapon1_level
-		add_child(weapon1_attack)
-		weapon1_ammo -= 1
-		if weapon1_ammo > 0:
-			weapon1_attack_timer.start()
+func _on_star_attack_timer_timeout():
+	if star_ammo>0:
+		var star_attack = star.instantiate()
+		star_attack.position = position 
+		star_attack.target = get_random_target()
+		star_attack.level = star_level
+		add_child(star_attack)
+		star_ammo -= 1
+		if star_ammo > 0:
+			star_attack_timer.start()
 		else:
-			weapon1_attack_timer.stop()
+			star_attack_timer.stop()
 
 func get_random_target():
 	if enemy_close.size() > 0:
@@ -129,33 +119,16 @@ func _on_enemy_detection_area_body_exited(body):
 	if enemy_close.has(body):
 		enemy_close.erase(body)
 
-func _on_weapon_2_timer_timeout():
-	weapon2_ammo += weapon2_base_ammo + additional_attacks
-	weapon2_attack_timer.start()
-
-func _on_weapon_2_attack_timer_timeout():
-	if weapon2_ammo>0:
-		var weapon2_attack = weapon2.instantiate()
-		weapon2_attack.position = position 
-		weapon2_attack.last_movement = last_movement
-		weapon2_attack.level = weapon2_level
-		add_child(weapon2_attack)
-		weapon2_ammo -= 1
-		if weapon2_ammo > 0:
-			weapon2_attack_timer.start()
-		else:
-			weapon2_attack_timer.stop()
-
-func spawn_weapon3():
-	var get_weapon3_total = $Attack/Weapon3Base.get_child_count()
-	var count_spawns = weapon3_ammo + additional_attacks - get_weapon3_total
+func spawn_hand():
+	var get_hand_total = $Attack/HandBase.get_child_count()
+	var count_spawns = hand_ammo + additional_attacks - get_hand_total
 	while count_spawns>0:
-		var weapon3_spawn = weapon3.instantiate()
-		weapon3_spawn.global_position = global_position
-		$Attack/Weapon3Base.add_child(weapon3_spawn)
+		var hand_spawn = hand.instantiate()
+		hand_spawn.global_position = global_position
+		$Attack/HandBase.add_child(hand_spawn)
 		count_spawns -= 1 
-	var get_weapon3 = $Attack/Weapon3Base.get_children()
-	for i in get_weapon3:
+	var get_hand = $Attack/HandBase.get_children()
+	for i in get_hand:
 		i.update_weapon()
 
 func _on_grab_area_area_entered(area):
@@ -210,38 +183,26 @@ func upgrade_character(upgrade):
 		"HEALTH":
 			HP += 25
 			HP = clamp(HP, 0, MAXHP)
-		"WEAPON1-1":
-			weapon1_level = 1
-			weapon1_base_ammo += 1
-		"WEAPON1-2":
-			weapon1_level = 2
-			weapon1_base_ammo += 1
-		"WEAPON1-3":
-			weapon1_level = 3
-		"WEAPON1-4":
-			weapon1_level = 4
-			weapon1_base_ammo += 2
-		"WEAPON2-1":
-			weapon2_level = 1
-			weapon2_base_ammo += 1
-		"WEAPON2-2":
-			weapon2_level = 2
-			weapon2_base_ammo += 1
-		"WEAPON2-3":
-			weapon2_level = 3
-			weapon2_attack_speed -= 0.5
-		"WEAPON2-4":
-			weapon2_level = 4
-			weapon2_base_ammo += 1
-		"WEAPON3-1":
-			weapon3_level = 1
-			weapon3_ammo = 1
-		"WEAPON3-2":
-			weapon3_level = 2
-		"WEAPON3-3":
-			weapon3_level = 3
-		"WEAPON3-4":
-			weapon3_level = 4
+		"STAR1":
+			star_level = 1
+			star_base_ammo += 1
+		"STAR2":
+			star_level = 2
+			star_base_ammo += 1
+		"STAR3":
+			star_level = 3
+		"STAR4":
+			star_level = 4
+			star_base_ammo += 2
+		"HAND1":
+			hand_level = 1
+			hand_ammo = 1
+		"HAND2":
+			hand_level = 2
+		"HAND3":
+			hand_level = 3
+		"HAND4":
+			hand_level = 4
 		"ARMOUR1","ARMOUR2","ARMOUR3","ARMOUR4":
 			armour += 1
 		"SPEED1","SPEED2","SPEED3","SPEED4":
@@ -288,5 +249,7 @@ func get_random_item():
 		return null
 		
 func player_death():
-	print("player died")
-	queue_free()
+	get_tree().paused = true
+
+func update_health_bar():
+	health_bar.value = HP

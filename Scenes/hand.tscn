@@ -1,21 +1,21 @@
 [gd_scene load_steps=4 format=3 uid="uid://wx42cic3a7n6"]
 
-[ext_resource type="Script" path="res://Scripts/Weapon3.gd" id="1_n4o0l"]
-[ext_resource type="Texture2D" uid="uid://c2xkvjwfjoqqn" path="res://Assets/Sprites/blue_hand_point.png" id="2_2padj"]
+[ext_resource type="Texture2D" uid="uid://c2xkvjwfjoqqn" path="res://Assets/Sprites/blue_hand_point.png" id="1_m36d1"]
+[ext_resource type="Script" path="res://Scripts/hand.gd" id="1_xfssk"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_n86yi"]
 radius = 21.0
 
-[node name="Weapon3" type="Area2D" groups=["Attack"]]
+[node name="Hand" type="Area2D" groups=["Attack"]]
 top_level = true
 scale = Vector2(0.1, 0.1)
 collision_layer = 4
 collision_mask = 0
-script = ExtResource("1_n4o0l")
+script = ExtResource("1_xfssk")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_2padj")
+texture = ExtResource("1_m36d1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 0)

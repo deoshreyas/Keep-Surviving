@@ -1,7 +1,7 @@
 extends Node
 
 const UPGRADES = {
-	"WEAPON1-1":
+	"STAR1":
 		{
 			"displayname": "Star",
 			"level": "Lvl 1",
@@ -9,82 +9,54 @@ const UPGRADES = {
 			"prerequisite": [],
 			"type": "weapon"
 		},
-	"WEAPON1-2":
+	"STAR2":
 		{
 			"displayname": "Star",
 			"level": "Lvl 2",
 			"description": "An additional star is thrown",
-			"prerequisite": ["WEAPON1-1"],
+			"prerequisite": ["STAR1"],
 			"type": "weapon"
 		},
-	"WEAPON1-3": {
+	"STAR3": {
 		"displayname": "Star",
 		"description": "Stars now pass through another enemy and do +3 damage",
 		"level": "Lvl 3",
-		"prerequisite": ["WEAPON1-2"],
+		"prerequisite": ["STAR2"],
 		"type": "weapon"
 	},
-	"WEAPON1-4": {
+	"STAR4": {
 		"displayname": "Star",
 		"description": "An additional 2 Stars are thrown",
 		"level": "Lvl 4",
-		"prerequisite": ["WEAPON1-3"],
+		"prerequisite": ["STAR3"],
 		"type": "weapon"
 	},
-	"WEAPON3-1": {
+	"HAND1": {
 		"displayname": "Hands",
-		"description": "A magical hand will follow you attacking enemies in a straight line",
+		"description": "A magical hand will follow you attacking enemies",
 		"level": "Lvl 1",
 		"prerequisite": [],
 		"type": "weapon"
 	},
-	"WEAPON3-2": {
+	"HAND2": {
 		"displayname": "Hands",
-		"description": "The hand will now attack an additional enemy per attack",
+		"description": "The hand will now attack +1 enemy per attack",
 		"level": "Lvl 2",
-		"prerequisite": ["WEAPON3-1"],
+		"prerequisite": ["HAND1"],
 		"type": "weapon"
 	},
-	"WEAPON3-3": {
+	"HAND3": {
 		"displayname": "Hands",
-		"description": "The hand will attack another additional enemy per attack",
+		"description": "The hand will attack +1 enemy per attack",
 		"level": "Lvl 3",
-		"prerequisite": ["WEAPON3-2"],
+		"prerequisite": ["HAND2"],
 		"type": "weapon"
 	},
-	"WEAPON3-4": {
+	"HAND4": {
 		"displayname": "Hands",
-		"description": "The hand now does +5 damage per attack and causes 20% additional knockback",
+		"description": "+5 damage per attack and +20% knockback",
 		"level": "Lvl 4",
-		"prerequisite": ["WEAPON3-3"],
-		"type": "weapon"
-	},
-	"WEAPON2-1": {
-		"displayname": "Spell",
-		"description": "A spell is cast and randomly heads somewhere",
-		"level": "Lvl 1",
-		"prerequisite": [],
-		"type": "weapon"
-	},
-	"WEAPON2-2": {
-		"displayname": "Spell",
-		"description": "An additional spell is cast",
-		"level": "Lvl 2",
-		"prerequisite": ["WEAPON2-1"],
-		"type": "weapon"
-	},
-	"WEAPON2-3": {
-		"displayname": "Spell",
-		"description": "The spell cooldown is reduced by 0.5 seconds",
-		"level": "Lvl 3",
-		"prerequisite": ["WEAPON2-2"],
-		"type": "weapon"
-	},
-	"WEAPON2-4": {
-		"displayname": "Spell",
-		"description": "An additional spell is created and the knockback is increased by 25%",
-		"level": "Lvl 4",
-		"prerequisite": ["WEAPON2-3"],
+		"prerequisite": ["HAND3"],
 		"type": "weapon"
 	},
 	"ARMOUR1": {

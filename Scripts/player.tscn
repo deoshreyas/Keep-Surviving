@@ -1,10 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://d4ffsob233px3"]
+[gd_scene load_steps=13 format=3 uid="uid://d4ffsob233px3"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_iesbu"]
 [ext_resource type="Texture2D" uid="uid://ccortpq844o50" path="res://Assets/Sprites/blue_body_square.png" id="1_q6lw0"]
 [ext_resource type="Texture2D" uid="uid://dcflk0ow3g3lu" path="res://Assets/Sprites/face_f.png" id="2_e724c"]
 [ext_resource type="PackedScene" uid="uid://dpm1fv8u832uq" path="res://Scenes/hurtbox.tscn" id="4_kr5mb"]
-[ext_resource type="FontFile" uid="uid://d1kg6oeckcu3m" path="res://Assets/Fonts/Jaro-Regular-VariableFont_opsz.ttf" id="5_jg4df"]
+[ext_resource type="FontFile" uid="uid://jh3tay3nrsx5" path="res://Assets/Fonts/PressStart2P-Regular.ttf" id="5_j2h7l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ujlwo"]
 
@@ -26,18 +26,10 @@ bg_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_32315"]
 bg_color = Color(0, 0.698039, 0.509804, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pqp1o"]
-bg_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mv7k4"]
-bg_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ac7vq"]
-bg_color = Color(0, 0.737255, 0.231373, 1)
-
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 scale = Vector2(0.3, 0.3)
 script = ExtResource("1_iesbu")
+metadata/_edit_group_ = true
 
 [node name="Body" type="Sprite2D" parent="."]
 texture = ExtResource("1_q6lw0")
@@ -61,15 +53,23 @@ shape = SubResource("RectangleShape2D_2uf7u")
 
 [node name="Attack" type="Node2D" parent="."]
 
-[node name="StarTimer" type="Timer" parent="Attack"]
+[node name="Weapon1Timer" type="Timer" parent="Attack"]
 unique_name_in_owner = true
 wait_time = 1.5
 
-[node name="StarAttackTimer" type="Timer" parent="Attack/StarTimer"]
+[node name="Weapon1AttackTimer" type="Timer" parent="Attack/Weapon1Timer"]
 unique_name_in_owner = true
 wait_time = 0.075
 
-[node name="HandBase" type="Area2D" parent="Attack"]
+[node name="Weapon2Timer" type="Timer" parent="Attack"]
+unique_name_in_owner = true
+wait_time = 3.0
+
+[node name="Weapon2AttackTimer" type="Timer" parent="Attack/Weapon2Timer"]
+unique_name_in_owner = true
+wait_time = 0.2
+
+[node name="Weapon3Base" type="Area2D" parent="Attack"]
 
 [node name="EnemyDetectionArea" type="Area2D" parent="."]
 visible = false
@@ -118,15 +118,14 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -32.0
-offset_top = 8.0
+offset_top = 15.0
 offset_right = 32.0
-offset_bottom = 31.0
+offset_bottom = 38.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("5_jg4df")
-theme_override_font_sizes/font_size = 16
+theme_override_fonts/font = ExtResource("5_j2h7l")
+theme_override_font_sizes/font_size = 8
 text = "Level: 0"
-horizontal_alignment = 1
 
 [node name="LevelUpPanel" type="Panel" parent="HUD/Control"]
 unique_name_in_owner = true
@@ -138,26 +137,20 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -79.0
-offset_top = -70.5
-offset_right = 79.0
-offset_bottom = 70.5
+offset_left = -55.0
+offset_top = -62.5
+offset_right = 55.0
+offset_bottom = 62.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_pqp1o")
 
 [node name="Label" type="Label" parent="HUD/Control/LevelUpPanel"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -50.0
-offset_top = 1.0
-offset_right = 50.0
-offset_bottom = 22.0
-grow_horizontal = 2
-theme_override_fonts/font = ExtResource("5_jg4df")
-theme_override_font_sizes/font_size = 14
+layout_mode = 2
+offset_top = 5.0
+offset_right = 100.0
+offset_bottom = 16.0
+theme_override_fonts/font = ExtResource("5_j2h7l")
+theme_override_font_sizes/font_size = 8
 text = "Level-Up"
 horizontal_alignment = 1
 
@@ -175,19 +168,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 5
 
-[node name="Healthbar" type="ProgressBar" parent="."]
-offset_left = -87.0
-offset_top = 47.0
-offset_right = 87.0
-offset_bottom = 74.0
-theme_override_styles/background = SubResource("StyleBoxFlat_mv7k4")
-theme_override_styles/fill = SubResource("StyleBoxFlat_ac7vq")
-value = 50.0
-show_percentage = false
-
 [connection signal="hurt" from="Hurtbox" to="." method="_on_hurtbox_hurt"]
-[connection signal="timeout" from="Attack/StarTimer" to="." method="_on_star_timer_timeout"]
-[connection signal="timeout" from="Attack/StarTimer/StarAttackTimer" to="." method="_on_star_attack_timer_timeout"]
+[connection signal="timeout" from="Attack/Weapon1Timer" to="." method="_on_weapon_1_timer_timeout"]
+[connection signal="timeout" from="Attack/Weapon1Timer/Weapon1AttackTimer" to="." method="_on_weapon_1_attack_timer_timeout"]
+[connection signal="timeout" from="Attack/Weapon2Timer" to="." method="_on_weapon_2_timer_timeout"]
+[connection signal="timeout" from="Attack/Weapon2Timer/Weapon2AttackTimer" to="." method="_on_weapon_2_attack_timer_timeout"]
 [connection signal="body_entered" from="EnemyDetectionArea" to="." method="_on_enemy_detection_area_body_entered"]
 [connection signal="body_exited" from="EnemyDetectionArea" to="." method="_on_enemy_detection_area_body_exited"]
 [connection signal="area_entered" from="GrabArea" to="." method="_on_grab_area_area_entered"]
