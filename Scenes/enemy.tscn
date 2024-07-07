@@ -29,7 +29,6 @@ texture = ExtResource("2_fftpu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 0.785398
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_sufja")
 
 [node name="Hurtbox" parent="." instance=ExtResource("4_q6mfx")]
@@ -40,7 +39,6 @@ HurtType = 1
 [node name="CollisionShape2D" parent="Hurtbox" index="0"]
 position = Vector2(0, -2)
 rotation = 0.785398
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_6u2rk")
 
 [node name="Hitbox" parent="." instance=ExtResource("5_hx5m6")]
@@ -50,7 +48,6 @@ collision_mask = 2
 [node name="CollisionShape2D" parent="Hitbox" index="0"]
 position = Vector2(0, 9.53674e-07)
 rotation = 0.785398
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_vrbp2")
 
 [connection signal="hurt" from="Hurtbox" to="." method="_on_hurtbox_hurt"]

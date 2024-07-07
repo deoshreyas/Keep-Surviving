@@ -7,6 +7,7 @@ var last_movement = Vector2.UP
 # Attacks
 var weapon1 = preload("res://Scenes/weapon_1.tscn")
 var weapon2 = preload("res://Scenes/weapon_2.tscn")
+var weapon3 = preload("res://Scenes/weapon_3.tscn")
 
 # Attack Nodes 
 @onready var weapon1_timer = get_node("%Weapon1Timer")
@@ -24,7 +25,11 @@ var weapon1_level = 0
 var weapon2_ammo = 0 
 var weapon2_base_ammo = 1
 var weapon2_attack_speed = 3
-var weapon2_level = 1
+var weapon2_level = 0
+
+# Weapon 3 
+var weapon3_ammo = 1
+var weapon3_level = 1
 
 # Enemy 
 var enemy_close = []
@@ -57,6 +62,8 @@ func attack():
 		weapon2_timer.wait_time = weapon2_attack_speed
 		if weapon2_timer.is_stopped():
 			weapon2_timer.start()
+	if weapon3_level>0:
+		spawn_weapon3()
 
 func _on_weapon_1_timer_timeout():
 	weapon1_ammo += weapon1_base_ammo
@@ -105,3 +112,12 @@ func _on_weapon_2_attack_timer_timeout():
 			weapon2_attack_timer.start()
 		else:
 			weapon2_attack_timer.stop()
+
+func spawn_weapon3():
+	var get_weapon3_total = weapon3.get_child_count()
+	var count_spawns = weapon3_ammo - get_weapon3_total
+	while count_spawns>0:
+		var weapon3_spawn = weapon3.instantiate()
+		weapon3_spawn.global_position = global_position
+		$Attack/Weapon3Base.add_child(weapon3_spawn)
+		count_spawns -= 1 

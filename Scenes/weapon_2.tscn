@@ -7,7 +7,7 @@
 
 [node name="Weapon2" type="Area2D" groups=["Attack"]]
 top_level = true
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.1, 0.1)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_fmeqr")

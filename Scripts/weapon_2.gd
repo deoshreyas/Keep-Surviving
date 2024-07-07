@@ -35,13 +35,20 @@ func _ready():
 			move_to_less = global_position + Vector2(last_movement.x, randf_range(-1, -0.25)) * 500
 			move_to_more = global_position + Vector2(last_movement.x, randf_range(0.25, 1)) * 500
 		Vector2(1, 1), Vector2(-1, -1), Vector2(1, -1), Vector2(-1, 1):
-			move_to_less = global_position + Vector2(last_movement.x, last_movement.y) * randf_range(0, 0.75) * 500
+			move_to_less = global_position + Vector2(last_movement.x, last_movement.y) * 500
 			move_to_more = global_position + Vector2(last_movement.x + randf_range(0, 0.75), last_movement.y) * 500
 		
 	angle_less = global_position.direction_to(move_to_less)
 	angle_more = global_position.direction_to(move_to_more)
 	
-	var tween = create_tween().set_loops(6)
+	var init_tween = create_tween()
+	init_tween.tween_property(self, "scale", Vector2(0.5, 0.5)*attack_size, 3).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	var final_speed = speed
+	speed = speed/5
+	init_tween.tween_property(self, "speed", final_speed, 6).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	init_tween.play()
+	
+	var tween = create_tween().set_loops(3)
 	var set_angle = randi_range(0, 1)
 	if set_angle==1:
 		angle = angle_less
