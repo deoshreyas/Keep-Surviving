@@ -48,6 +48,7 @@ var weapon3_level = 1
 # Level up 
 @onready var level_up_panel = get_node("%LevelUpPanel")
 @onready var upgrades = get_node("%Upgrades")
+@onready var upgrade_button = preload("res://Scenes/upgrade_button.tscn")
 
 # Enemy 
 var enemy_close = []
@@ -182,4 +183,17 @@ func update_exp_bar():
 
 func level_up():
 	level_up_panel.visible = true
+	var options = 0 
+	var max_options = 3
+	while options<max_options:
+		var option_instance = upgrade_button.instantiate()
+		upgrades.add_child(option_instance)
+		options += 1
 	get_tree().paused = true
+
+func upgrade_character(upgrade):
+	var option_children = upgrades.get_children()
+	for i in option_children:
+		i.queue_free()
+	level_up_panel.visible = false
+	get_tree().paused = false
