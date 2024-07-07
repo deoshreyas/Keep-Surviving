@@ -130,6 +130,7 @@ text = "Level: 0"
 [node name="LevelUpPanel" type="Panel" parent="HUD/Control"]
 unique_name_in_owner = true
 process_mode = 2
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

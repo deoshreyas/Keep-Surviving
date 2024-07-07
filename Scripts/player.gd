@@ -53,6 +53,15 @@ var weapon3_level = 1
 # Enemy 
 var enemy_close = []
 
+# Upgrades
+var collected_upgrades = []
+var upgrade_options = []
+var armour = 0 
+var speed = 0 
+var spell_cooldown = 0 
+var spel_size = 0
+var additional_attacks = 0
+
 func _ready():
 	attack()
 	exp_level = 1
@@ -155,14 +164,12 @@ func _on_collect_area_area_entered(area):
 func calculate_experience(gem_exp):
 	var exp_required = calculate_experience_cap()
 	collected_exp += gem_exp
-	if experience + collected_exp > exp_required:
+	if experience + collected_exp >= exp_required:
 		collected_exp -= exp_required - experience 
 		exp_level += 1
 		experience = 0
 		exp_required = calculate_experience_cap()
-		print("Level: ", exp_level)
 		level_up()
-		calculate_experience(0)
 	else:
 		experience += collected_exp
 		collected_exp = 0 
@@ -187,6 +194,7 @@ func level_up():
 	var max_options = 3
 	while options<max_options:
 		var option_instance = upgrade_button.instantiate()
+		option_instance.item = get_random_item()
 		upgrades.add_child(option_instance)
 		options += 1
 	get_tree().paused = true
@@ -195,5 +203,32 @@ func upgrade_character(upgrade):
 	var option_children = upgrades.get_children()
 	for i in option_children:
 		i.queue_free()
+	upgrade_options.clear()
+	collected_upgrades.append(upgrade)
 	level_up_panel.visible = false
 	get_tree().paused = false
+	calculate_experience(0)
+	
+func get_random_item():
+	var dblist = []
+	for i in UpgradesDb.UPGRADES:
+		if i in collected_upgrades:
+			pass 
+		elif i in upgrade_options:
+			pass
+		elif UpgradesDb.UPGRADES[i]["type"]=="item":
+			pass
+		elif UpgradesDb.UPGRADES[i]["prerequisite"].size()>0:
+			for n in UpgradesDb.UPGRADES[i]["prerequisite"]:
+				if not n in collected_upgrades:
+					pass
+				else:
+					dblist.append(i)
+		else:
+			dblist.append(i)
+	if dblist.size()>0:
+		var random_upgrade = dblist.pick_random()
+		upgrade_options.append(random_upgrade)
+		return random_upgrade
+	else:
+		return null
