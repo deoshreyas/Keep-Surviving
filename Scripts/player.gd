@@ -1,7 +1,8 @@
 extends CharacterBody2D
 
 @export var SPEED = 30
-@export var HP = 80
+@export var HP = 100
+const MAXHP = 100
 var last_movement = Vector2.UP
 
 # HUD
@@ -43,7 +44,7 @@ var weapon2_level = 0
 
 # Weapon 3 
 var weapon3_ammo = 2
-var weapon3_level = 1
+var weapon3_level = 0
 
 # Level up 
 @onready var level_up_panel = get_node("%LevelUpPanel")
@@ -59,20 +60,22 @@ var upgrade_options = []
 var armour = 0 
 var speed = 0 
 var spell_cooldown = 0 
-var spel_size = 0
+var spell_size = 0
 var additional_attacks = 0
 
 func _ready():
 	attack()
 	exp_level = 1
+	upgrade_character("WEAPON3-1")
 
 func _physics_process(delta):
 	movement(delta)
 	update_exp_bar()
 
 func _on_hurtbox_hurt(damage, _angle, _knockback):
-	HP -= damage
-	print(HP)
+	HP -= clamp(damage-armour, 1, 999)
+	if HP <= 0:
+		player_death()
 
 func movement(delta):
 	var input_axis_x = Input.get_axis("btn_left", "btn_right")
@@ -85,18 +88,18 @@ func movement(delta):
 	
 func attack():
 	if weapon1_level>0:
-		weapon1_timer.wait_time = weapon1_attack_speed
+		weapon1_timer.wait_time = weapon1_attack_speed * (1 - spell_cooldown)
 		if weapon1_timer.is_stopped():
 			weapon1_timer.start()
 	if weapon2_level>0:
-		weapon2_timer.wait_time = weapon2_attack_speed
+		weapon2_timer.wait_time = weapon2_attack_speed * (1 - spell_cooldown)
 		if weapon2_timer.is_stopped():
 			weapon2_timer.start()
 	if weapon3_level>0:
 		spawn_weapon3()
 
 func _on_weapon_1_timer_timeout():
-	weapon1_ammo += weapon1_base_ammo
+	weapon1_ammo += weapon1_base_ammo + additional_attacks
 	weapon1_attack_timer.start()
 	
 func _on_weapon_1_attack_timer_timeout():
@@ -127,7 +130,7 @@ func _on_enemy_detection_area_body_exited(body):
 		enemy_close.erase(body)
 
 func _on_weapon_2_timer_timeout():
-	weapon2_ammo += weapon2_base_ammo
+	weapon2_ammo += weapon2_base_ammo + additional_attacks
 	weapon2_attack_timer.start()
 
 func _on_weapon_2_attack_timer_timeout():
@@ -145,12 +148,15 @@ func _on_weapon_2_attack_timer_timeout():
 
 func spawn_weapon3():
 	var get_weapon3_total = $Attack/Weapon3Base.get_child_count()
-	var count_spawns = weapon3_ammo - get_weapon3_total
+	var count_spawns = weapon3_ammo + additional_attacks - get_weapon3_total
 	while count_spawns>0:
 		var weapon3_spawn = weapon3.instantiate()
 		weapon3_spawn.global_position = global_position
 		$Attack/Weapon3Base.add_child(weapon3_spawn)
 		count_spawns -= 1 
+	var get_weapon3 = $Attack/Weapon3Base.get_children()
+	for i in get_weapon3:
+		i.update_weapon()
 
 func _on_grab_area_area_entered(area):
 	if area is Gem:
@@ -200,6 +206,53 @@ func level_up():
 	get_tree().paused = true
 
 func upgrade_character(upgrade):
+	match upgrade:
+		"HEALTH":
+			HP += 25
+			HP = clamp(HP, 0, MAXHP)
+		"WEAPON1-1":
+			weapon1_level = 1
+			weapon1_base_ammo += 1
+		"WEAPON1-2":
+			weapon1_level = 2
+			weapon1_base_ammo += 1
+		"WEAPON1-3":
+			weapon1_level = 3
+		"WEAPON1-4":
+			weapon1_level = 4
+			weapon1_base_ammo += 2
+		"WEAPON2-1":
+			weapon2_level = 1
+			weapon2_base_ammo += 1
+		"WEAPON2-2":
+			weapon2_level = 2
+			weapon2_base_ammo += 1
+		"WEAPON2-3":
+			weapon2_level = 3
+			weapon2_attack_speed -= 0.5
+		"WEAPON2-4":
+			weapon2_level = 4
+			weapon2_base_ammo += 1
+		"WEAPON3-1":
+			weapon3_level = 1
+			weapon3_ammo = 1
+		"WEAPON3-2":
+			weapon3_level = 2
+		"WEAPON3-3":
+			weapon3_level = 3
+		"WEAPON3-4":
+			weapon3_level = 4
+		"ARMOUR1","ARMOUR2","ARMOUR3","ARMOUR4":
+			armour += 1
+		"SPEED1","SPEED2","SPEED3","SPEED4":
+			SPEED += 20.0
+		"SIZE1","SIZE2","SIZE3","SIZE4":
+			spell_size += 0.10
+		"SCROLL1","SCROLL2","SCROLL3","SCROLL4":
+			spell_cooldown += 0.05
+		"RING1","RING2":
+			additional_attacks += 1
+	attack()
 	var option_children = upgrades.get_children()
 	for i in option_children:
 		i.queue_free()
@@ -219,11 +272,12 @@ func get_random_item():
 		elif UpgradesDb.UPGRADES[i]["type"]=="item":
 			pass
 		elif UpgradesDb.UPGRADES[i]["prerequisite"].size()>0:
+			var to_add = true
 			for n in UpgradesDb.UPGRADES[i]["prerequisite"]:
 				if not n in collected_upgrades:
-					pass
-				else:
-					dblist.append(i)
+					to_add = false
+			if to_add:
+				dblist.append(i)
 		else:
 			dblist.append(i)
 	if dblist.size()>0:
@@ -232,3 +286,7 @@ func get_random_item():
 		return random_upgrade
 	else:
 		return null
+		
+func player_death():
+	print("player died")
+	queue_free()

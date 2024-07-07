@@ -16,3 +16,4 @@ position = Vector2(135, 81)
 
 [node name="Gem" parent="." instance=ExtResource("3_x15kf")]
 position = Vector2(172, 109)
+EXPERIENCE = 100

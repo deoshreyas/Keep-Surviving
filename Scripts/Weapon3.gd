@@ -34,11 +34,38 @@ func update_weapon():
 			var level = 1
 			var hp = 9999
 			var speed = 200 
-			var damage = 30
+			var damage = 10
 			var knock_amt = 100
 			var path = 1
-			var attack_size = 1.0 
-			var attack_speed = 4.0
+			var attack_size = 1.0 + (1 + player.spell_size)
+			var attack_speed = 5.0 * (1 - player.spell_cooldown)
+		1:
+			var level = 1
+			var hp = 9999
+			var speed = 200 
+			var damage = 10
+			var knock_amt = 100
+			var path = 2
+			var attack_size = 1.0 + (1 + player.spell_size)
+			var attack_speed = 5.0 * (1 - player.spell_cooldown)
+		1:
+			var level = 1
+			var hp = 9999
+			var speed = 200 
+			var damage = 10
+			var knock_amt = 100
+			var path = 3
+			var attack_size = 1.0 + (1 + player.spell_size)
+			var attack_speed = 5.0 * (1 - player.spell_cooldown)
+		1:
+			var level = 1
+			var hp = 9999
+			var speed = 200 
+			var damage = 15
+			var knock_amt = 120
+			var path = 1
+			var attack_size = 1.0 + (1 + player.spell_size)
+			var attack_speed = 5.0 * (1 - player.spell_cooldown)
 	scale = Vector2(0.1, 0.1) * attack_speed
 	attack_timer.wait_time = attack_speed
 
