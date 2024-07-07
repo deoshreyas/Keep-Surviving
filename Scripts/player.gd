@@ -28,7 +28,7 @@ var weapon2_attack_speed = 3
 var weapon2_level = 0
 
 # Weapon 3 
-var weapon3_ammo = 1
+var weapon3_ammo = 2
 var weapon3_level = 1
 
 # Enemy 
@@ -114,7 +114,7 @@ func _on_weapon_2_attack_timer_timeout():
 			weapon2_attack_timer.stop()
 
 func spawn_weapon3():
-	var get_weapon3_total = weapon3.get_child_count()
+	var get_weapon3_total = $Attack/Weapon3Base.get_child_count()
 	var count_spawns = weapon3_ammo - get_weapon3_total
 	while count_spawns>0:
 		var weapon3_spawn = weapon3.instantiate()

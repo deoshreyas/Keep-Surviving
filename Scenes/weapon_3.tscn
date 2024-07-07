@@ -1,18 +1,21 @@
 [gd_scene load_steps=4 format=3 uid="uid://wx42cic3a7n6"]
 
 [ext_resource type="Script" path="res://Scripts/Weapon3.gd" id="1_n4o0l"]
-[ext_resource type="Texture2D" uid="uid://rwfxh2kvd1wk" path="res://Assets/Sprites/green_hand_point.png" id="2_klp5b"]
+[ext_resource type="Texture2D" uid="uid://c2xkvjwfjoqqn" path="res://Assets/Sprites/blue_hand_point.png" id="2_2padj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_n86yi"]
 radius = 21.0
 
-[node name="Weapon3" type="Area2D"]
-scale = Vector2(0.5, 0.5)
+[node name="Weapon3" type="Area2D" groups=["Attack"]]
+top_level = true
+scale = Vector2(0.1, 0.1)
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("1_n4o0l")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_klp5b")
+texture = ExtResource("2_2padj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 0)
@@ -26,3 +29,9 @@ autostart = true
 [node name="ChangeTimer" type="Timer" parent="."]
 
 [node name="ResetPosTimer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
+[connection signal="timeout" from="ChangeTimer" to="." method="_on_change_timer_timeout"]
+[connection signal="timeout" from="ResetPosTimer" to="." method="_on_reset_pos_timer_timeout"]

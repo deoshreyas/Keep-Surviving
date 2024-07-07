@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://rwfxh2kvd1wk"
-path="res://.godot/imported/green_hand_point.png-a4e4a9d685ce572d3cc9d66fee467cd2.ctex"
+uid="uid://c2xkvjwfjoqqn"
+path="res://.godot/imported/blue_hand_point.png-259bab86a605b2b2c0fb506e1dccdd65.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/green_hand_point.png"
-dest_files=["res://.godot/imported/green_hand_point.png-a4e4a9d685ce572d3cc9d66fee467cd2.ctex"]
+source_file="res://Assets/Sprites/blue_hand_point.png"
+dest_files=["res://.godot/imported/blue_hand_point.png-259bab86a605b2b2c0fb506e1dccdd65.ctex"]
 
 [params]
 
