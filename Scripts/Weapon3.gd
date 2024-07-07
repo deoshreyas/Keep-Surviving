@@ -48,11 +48,11 @@ func _physics_process(delta):
 	else:
 		var player_angle = global_position.direction_to(reset_pos)
 		var distance_diff = global_position - player.global_position 
-		var return_speed = 20 
+		var return_speed = 50 
 		if abs(distance_diff.y)>500 or abs(distance_diff.x)>500:
 			return_speed = 100 
 		position += player_angle*return_speed*delta
-		rotation = global_position.direction_to(player.global_position).angle() + deg_to_rad(135)
+		rotation = global_position.direction_to(player.global_position).angle() + deg_to_rad(-55)
 
 func _on_attack_timer_timeout():
 	add_paths()

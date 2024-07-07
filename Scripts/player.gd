@@ -4,6 +4,10 @@ extends CharacterBody2D
 @export var HP = 80
 var last_movement = Vector2.UP
 
+var experience = 0 
+var exp_level = 1 
+var collected_exp = 0
+
 # Attacks
 var weapon1 = preload("res://Scenes/weapon_1.tscn")
 var weapon2 = preload("res://Scenes/weapon_2.tscn")
@@ -121,3 +125,35 @@ func spawn_weapon3():
 		weapon3_spawn.global_position = global_position
 		$Attack/Weapon3Base.add_child(weapon3_spawn)
 		count_spawns -= 1 
+
+func _on_grab_area_area_entered(area):
+	if area is Gem:
+		area.target = self 
+
+func _on_collect_area_area_entered(area):
+	if area is Gem:
+		var gem_experience = area.collect()
+		calculate_experience(gem_experience)
+
+func calculate_experience(gem_exp):
+	var exp_required = calculate_experience_cap()
+	collected_exp += exp_required
+	if experience + collected_exp > exp_required:
+		collected_exp -= exp_required + experience 
+		exp_level += 1
+		exp_required = calculate_experience_cap()
+		print("Level: ", exp_level)
+		calculate_experience(0)
+	else:
+		experience += collected_exp
+		collected_exp = 0 
+	
+func calculate_experience_cap():
+	var experience_cap = exp_level
+	if exp_level<20:
+		experience_cap = exp_level*5
+	elif exp_level<40:
+		experience_cap = (exp_level - 19) * 10
+	else:
+		experience_cap = (exp_level - 39) * 15
+	return experience_cap

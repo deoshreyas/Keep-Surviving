@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bwgn250vo1v1h"]
+
+[ext_resource type="Script" path="res://Scripts/gem.gd" id="1_g0mse"]
+[ext_resource type="Texture2D" uid="uid://cxl2xf1matjea" path="res://Assets/Sprites/tile_coin.png" id="1_hkjb8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_huyid"]
+radius = 20.0
+
+[node name="Gem" type="Area2D"]
+scale = Vector2(0.15, 0.15)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_g0mse")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_hkjb8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_huyid")
