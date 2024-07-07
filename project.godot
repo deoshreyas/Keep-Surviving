@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 UpgradesDb="*res://Scenes/upgrades_db.tscn"
+SoundRoot="*res://Scenes/sound_root.tscn"
 
 [display]
 

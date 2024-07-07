@@ -23,6 +23,7 @@ func _physics_process(delta):
 		speed += 2 * delta
 	
 func collect():
+	SoundRoot.play_sound("coin")
 	collision.call_deferred("set", "disabled", true)
 	sprite.visible = false 
 	return EXPERIENCE 

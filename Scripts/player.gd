@@ -55,6 +55,11 @@ var spell_cooldown = 0
 var spell_size = 0
 var additional_attacks = 0
 
+# Game over 
+@onready var game_over_node = $HUD/GameOver
+@onready var time_taken = $HUD/GameOver/VBoxContainer/Time
+var time = 0
+
 func _ready():
 	attack()
 	exp_level = 1
@@ -65,6 +70,7 @@ func _physics_process(delta):
 	movement(delta)
 	update_exp_bar()
 	update_health_bar()
+	time += delta
 
 func _on_hurtbox_hurt(damage, _angle, _knockback):
 	HP -= clamp(damage-armour, 1, 999)
@@ -176,6 +182,7 @@ func level_up():
 		option_instance.item = get_random_item()
 		upgrades.add_child(option_instance)
 		options += 1
+	SoundRoot.play_sound("levelup")
 	get_tree().paused = true
 
 func upgrade_character(upgrade):
@@ -250,6 +257,12 @@ func get_random_item():
 		
 func player_death():
 	get_tree().paused = true
+	init_game_over()
 
 func update_health_bar():
 	health_bar.value = HP
+
+func init_game_over():
+	time = snapped(time, 0.01)
+	game_over_node.visible = true 
+	time_taken.text = "Time: " + str(time)

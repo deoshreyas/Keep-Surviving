@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://dy3d1sxtre6fh"]
+
+[ext_resource type="Script" path="res://Scripts/SoundRoot.gd" id="1_k2huv"]
+[ext_resource type="AudioStream" uid="uid://hog32s41hymd" path="res://Assets/SFX/coin.wav" id="2_dtixi"]
+[ext_resource type="AudioStream" uid="uid://bcuuuuterkg7f" path="res://Assets/SFX/levelup.wav" id="3_v7spb"]
+
+[node name="SoundRoot" type="Node2D"]
+script = ExtResource("1_k2huv")
+
+[node name="Coin" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_dtixi")
+
+[node name="Levelup" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_v7spb")
